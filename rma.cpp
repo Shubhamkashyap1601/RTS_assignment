@@ -13,6 +13,9 @@ struct Task {
     bool operator<(const Task& other) const {
         if (release_time != other.release_time)
             return release_time < other.release_time; // Sort by release time first
+        else if(period == other.period){
+            return execution>other.execution;
+        }
         else
             return period > other.period; // If release times are the same, sort by period
     }
@@ -70,7 +73,7 @@ void ScheduleTasks(vector<Task>& order) {
     // for(auto it : order){
     //     cout << it.id << " ";
     // }
-    // cout << endl;
+    cout << "----------- SCHEDULING NOW -----------\n";
     int i = 0;
     while(time<=MAX_TIME){
         while(time==order[i].release_time && time <=MAX_TIME && i < n){

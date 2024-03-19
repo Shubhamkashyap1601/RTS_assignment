@@ -11,7 +11,7 @@ struct Task{
 Task generator() {
     Task New_task;
     do {
-        New_task.period = (rand() % 50)+1;
+        New_task.period = (rand() % 80)+1;
         New_task.execution = (rand() % 5)+1;
         New_task.deadline = New_task.period;
     } while (New_task.period < New_task.execution); // Ensure period >= execution
