@@ -10,17 +10,21 @@ struct Task {
     int remaining_time;
     int deadline;
     int release_time;
-    bool operator<(const Task& other) const {
-        if (release_time != other.release_time)
-            return release_time < other.release_time; // Sort by release time first
-        else if(deadline == other.deadline){
-            return execution>other.execution;
-        }
-        else
-            return deadline > other.deadline; // If release times are the same, sort by period
-    }
+    int abs_deadline;
 };
 
+bool compare_release(Task& task1, Task& task2){
+    if (task1.release_time == task2.release_time)
+        return task1.abs_deadline < task2.abs_deadline; // Sort by absolute deadline if release times are equal
+    else
+        return task1.release_time < task2.release_time; // Otherwise, sort by release time
+}
+
+struct CompareDeadlines {
+    bool operator()(const Task& task1, const Task& task2) {
+        return task1.abs_deadline > task2.abs_deadline; // Sort by absolute deadline in ascending order
+    }
+};
 
 
 bool isSchedulable(const vector<Task>& tasks) {
@@ -67,7 +71,7 @@ vector<Task> ReadTaskInformation(const string& filename) {
 
 
 void ScheduleTasks(vector<Task>& order) {
-    priority_queue<Task> pq;
+    priority_queue<Task, vector<Task>, CompareDeadlines> pq;
     int n = order.size();
     int time = 0;
     // for(auto it : order){
@@ -103,21 +107,23 @@ void ScheduleTasks(vector<Task>& order) {
 int main() {
     vector<Task> tasks = ReadTaskInformation("tasks.csv");
     if (!isSchedulable(tasks)) {
-        cout << "Tasks are not schedulable using Deadline Monotonic Scheduling." << endl;
+        cout << "Tasks are not schedulable using Rate Monotonic Scheduling." << endl;
         return 1;
     }
      vector<Task> order;
     for(auto t:tasks) {
         for(int i=0;i<=MAX_TIME;i+=t.period) {
+            t.abs_deadline = i + t.deadline;
             t.release_time = i;
             order.push_back(t);
         }
     }
 
-    sort(order.begin(), order.end());
-
+    sort(order.begin(), order.end(),compare_release);
+    cout << "Printing order...\n";
+    cout << "id | period | execution | deadline | abs_deadline | remaining_time | release_time\n";
     for(auto t:order) {
-        cout<<t.id<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" "<<t.remaining_time<<" "<<t.release_time<<endl;
+        cout<<t.id<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" " << t.abs_deadline << " " <<t.remaining_time<<" "<<t.release_time<<endl;
     }
     cout << "\n\n\n";
     
