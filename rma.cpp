@@ -1,23 +1,20 @@
-// minimum
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
+
 #define MAX_TIME 100
-struct Task{
+
+struct Task {
     int id;
     int period;
     int execution;
     int remaining_time;
     int deadline;
 
-    // Overloading '<' operator for priority queue
+    // Overloading '<' operator for set
     bool operator<(const Task& other) const {
-        return period > other.period; // Shorter period means higher priority
+        return period < other.period; // Shorter period means higher priority
     }
 };
-
-bool comparePeriod(const Task& t1, const Task& t2) {
-    return t1.period < t2.period;
-}
 
 bool isSchedulable(const vector<Task>& tasks) {
     double utilization = 0;
@@ -29,9 +26,9 @@ bool isSchedulable(const vector<Task>& tasks) {
 
 // Function to read task information from a CSV file
 vector<Task> ReadTaskInformation(const string& filename) {
-    ifstream file("tasks.csv");
+    ifstream file(filename);
     if (!file.is_open()) {
-        cout << "Failed to open tasks.csv" << endl;
+        cout << "Failed to open " << filename << endl;
         exit(1);
     }
 
@@ -51,6 +48,7 @@ vector<Task> ReadTaskInformation(const string& filename) {
         task.execution = stoi(token);
         getline(ss, token, ',');
         task.deadline = stoi(token);
+        task.remaining_time = task.execution;
         tasks.push_back(task);
     }
     file.close();
@@ -58,48 +56,27 @@ vector<Task> ReadTaskInformation(const string& filename) {
     return tasks;
 }
 
-void ScheduleTasks(priority_queue<Task> &taskQueue) {
-    int time = 0;
-    int totalExecutionTime = 0;
-    while (time < MAX_TIME) {
-        // Execute the task with the highest priority (shortest period)
-        if (!taskQueue.empty()) {
-            Task currentTask = taskQueue.top();
-            taskQueue.pop();
-            totalExecutionTime += currentTask.execution;
-            cout << "Time: " << time << ", Total Execution Time: " << totalExecutionTime << endl;
-            currentTask.remaining_time--;
-            if (currentTask.remaining_time > 0) {
-                taskQueue.push(currentTask); // Push the task back into the queue if it's not completed
-            }
-        }
 
-        time++; // Increment simulation time
-    }
+
+void ScheduleTasks(set<Task>& taskSet) {
+    
 }
 
-
-
-
-
-
-int main(){
+int main() {
     vector<Task> tasks = ReadTaskInformation("tasks.csv");
     if (!isSchedulable(tasks)) {
         cout << "Tasks are not schedulable using Rate Monotonic Scheduling." << endl;
         return 1;
     }
 
-    priority_queue<Task> taskQueue;
+    set<Task> taskSet;
     for (const auto& task : tasks) {
-        taskQueue.push(task);
+        taskSet.insert(task);
     }
 
     int time = 0;
-    // cout << "Time\tTask ID\tPeriod\tExecution Remaining\tDeadline" << endl;
     
-    ScheduleTasks(taskQueue);
+    ScheduleTasks(taskSet);
 
-    
     return 0;
 }
