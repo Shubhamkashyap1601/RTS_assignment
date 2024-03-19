@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define MAX_TIME 100
+#define MAX_TIME 80
 
 struct Task {
     int id;
@@ -9,12 +9,17 @@ struct Task {
     int execution;
     int remaining_time;
     int deadline;
-
+    int release_time;
     // Overloading '<' operator for set
     bool operator<(const Task& other) const {
-        return period < other.period; // Shorter period means higher priority
+        if (release_time != other.release_time)
+            return release_time < other.release_time; // Sort by release time first
+        else
+            return period < other.period; // If release times are the same, sort by period
     }
 };
+
+
 
 bool isSchedulable(const vector<Task>& tasks) {
     double utilization = 0;
@@ -49,9 +54,25 @@ vector<Task> ReadTaskInformation(const string& filename) {
         getline(ss, token, ',');
         task.deadline = stoi(token);
         task.remaining_time = task.execution;
+        task.release_time = 0;
         tasks.push_back(task);
     }
     file.close();
+
+    vector<Task> order;
+    for(auto t:tasks) {
+        for(int i=0;i<=MAX_TIME;i+=t.period) {
+            t.release_time = i;
+            order.push_back(t);
+        }
+    }
+
+    sort(order.begin(), order.end());
+
+    for(auto t:order) {
+        cout<<t.id<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" "<<t.remaining_time<<" "<<t.release_time<<endl;
+    }
+
 
     return tasks;
 }
