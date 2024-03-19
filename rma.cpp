@@ -10,7 +10,6 @@ struct Task {
     int remaining_time;
     int deadline;
     int release_time;
-    // Overloading '<' operator for set
     bool operator<(const Task& other) const {
         if (release_time != other.release_time)
             return release_time < other.release_time; // Sort by release time first
@@ -59,7 +58,22 @@ vector<Task> ReadTaskInformation(const string& filename) {
     }
     file.close();
 
-    vector<Task> order;
+    return tasks;
+}
+
+
+
+void ScheduleTasks(vector<Task>& order) {
+    
+}
+
+int main() {
+    vector<Task> tasks = ReadTaskInformation("tasks.csv");
+    if (!isSchedulable(tasks)) {
+        cout << "Tasks are not schedulable using Rate Monotonic Scheduling." << endl;
+        return 1;
+    }
+     vector<Task> order;
     for(auto t:tasks) {
         for(int i=0;i<=MAX_TIME;i+=t.period) {
             t.release_time = i;
@@ -72,32 +86,8 @@ vector<Task> ReadTaskInformation(const string& filename) {
     for(auto t:order) {
         cout<<t.id<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" "<<t.remaining_time<<" "<<t.release_time<<endl;
     }
-
-
-    return tasks;
-}
-
-
-
-void ScheduleTasks(set<Task>& taskSet) {
     
-}
-
-int main() {
-    vector<Task> tasks = ReadTaskInformation("tasks.csv");
-    if (!isSchedulable(tasks)) {
-        cout << "Tasks are not schedulable using Rate Monotonic Scheduling." << endl;
-        return 1;
-    }
-
-    set<Task> taskSet;
-    for (const auto& task : tasks) {
-        taskSet.insert(task);
-    }
-
-    int time = 0;
-    
-    ScheduleTasks(taskSet);
+    ScheduleTasks(order);
 
     return 0;
 }
