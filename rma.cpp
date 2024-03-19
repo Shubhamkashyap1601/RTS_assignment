@@ -14,7 +14,7 @@ struct Task {
         if (release_time != other.release_time)
             return release_time < other.release_time; // Sort by release time first
         else
-            return period < other.period; // If release times are the same, sort by period
+            return period > other.period; // If release times are the same, sort by period
     }
 };
 
@@ -64,7 +64,37 @@ vector<Task> ReadTaskInformation(const string& filename) {
 
 
 void ScheduleTasks(vector<Task>& order) {
-    
+    priority_queue<Task> pq;
+    int n = order.size();
+    int time = 0;
+    // for(auto it : order){
+    //     cout << it.id << " ";
+    // }
+    // cout << endl;
+    int i = 0;
+    while(time<=MAX_TIME){
+        while(time==order[i].release_time && time <=MAX_TIME && i < n){
+            pq.push(order[i]);
+            cout<<"order: " << order[i].id<<"\t"<<time<<endl;
+            i++;
+        }
+        
+
+        if (!pq.empty()) {
+            Task temp = pq.top();
+            pq.pop();
+            cout << temp.id << " " << time << endl;
+            temp.remaining_time--;
+
+            if (temp.remaining_time > 0) {
+                pq.push(temp);
+            }
+        } else {
+            cout << "No task available at time " << time << endl;
+        }
+
+        time++;
+    }
 }
 
 int main() {
@@ -86,6 +116,7 @@ int main() {
     for(auto t:order) {
         cout<<t.id<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" "<<t.remaining_time<<" "<<t.release_time<<endl;
     }
+    cout << "\n\n\n";
     
     ScheduleTasks(order);
 
