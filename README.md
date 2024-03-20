@@ -2,7 +2,7 @@
 # RTS Assignment
 
 ### Assignment - 1
-1. Task Set Generator
+1. Task Set Generator - Periodic & Aperiodic Tasks
 2. Algorithms implemented:-
    * RMA
    * DMA
