@@ -29,7 +29,7 @@ Task generator(int n) {
 
 int main(){
     int n;
-    cout<<"Enter the number of periodic tasks that you want to generate ";
+    cout<<"Enter the number of periodic tasks that you want to generate: ";
     cin>>n;
     vector<Task> task(n);
     for(int i=0;i<n;i++){
@@ -38,19 +38,11 @@ int main(){
 
     while(!isSchedulable(task)){
         cout << "Taskset not schedulable, Regenerating taskset...\n";
-        // task.clear();
         for(int i=0;i<n;i++){
             task[i] = generator(n);
         }
     }
-    // cout << "----------------------------------\n";
-    // cout << "| Period | Execution |\n";
-    // cout << "----------------------------------\n";
-    // for(int i = 0; i < n; i++) {
-    //     auto [x, y] = task[i];
-    //     printf("|%7d |%10d |\n", x, y);
-    // }
-    // cout << "----------------------------------\n";
+    
 
     ofstream outputFile("tasks.csv");
 
