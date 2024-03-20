@@ -2,7 +2,7 @@
 using namespace std;
 
 long long MAX_TIME = 100;
-ofstream outputFile("schedule.csv");
+ofstream outputFile("schedule_edf.csv");
 
 struct Task {
     int id;
@@ -31,9 +31,7 @@ long long calcHP(vector<Task>& task){
     long long temp = 1;
     for(int i=0;i<task.size();i++){
         temp = (temp*task[i].period)/__gcd(temp,(long long)task[i].period);
-        // cout << "temp: " << temp << endl;
     }
-    // cout << "Hyperperiod: " << temp << endl;
     outputFile << "Hyperperiod: " << temp << "\n";
     return temp;
 }
@@ -86,17 +84,13 @@ void ScheduleTasks(vector<Task>& order) {
     priority_queue<Task, vector<Task>, CompareDeadlines> pq;
     int n = order.size();
     int time = 0;
-    // for(auto it : order){
-    //     cout << it.id << " ";
-    // }
-    // cout << "----------- SCHEDULING NOW -----------\n";
+    
     outputFile << "----------- SCHEDULING NOW -----------\n";
     outputFile << "Time\t\tTask"<< "\n";
     int i = 0;
     while(time<=MAX_TIME){
         while(time==order[i].release_time && time <=MAX_TIME && i < n){
             pq.push(order[i]);
-            // cout<<"order: " << order[i].id<<"\t"<<time<<endl;
             i++;
         }
         
@@ -104,7 +98,6 @@ void ScheduleTasks(vector<Task>& order) {
         if (!pq.empty()) {
             Task temp = pq.top();
             pq.pop();
-            // cout << temp.id << " " << time << endl;
             outputFile << time << "\t\t\tT" << temp.id << "\n";
             temp.remaining_time--;
 
@@ -112,7 +105,6 @@ void ScheduleTasks(vector<Task>& order) {
                 pq.push(temp);
             }
         } else {
-            // cout << "No task available at time " << time << endl;
             outputFile << "No task available at time " << time << "\n";
         }
 
@@ -127,6 +119,7 @@ int main() {
         cout << "Tasks are not schedulable using Earliest Deadline First Scheduling." << endl;
         return 1;
     }
+    MAX_TIME = calcHP(tasks);
      vector<Task> order;
     for(auto t:tasks) {
         for(int i=0;i<=MAX_TIME;i+=t.period) {
@@ -135,18 +128,11 @@ int main() {
             order.push_back(t);
         }
     }
-    MAX_TIME = calcHP(tasks);
 
     sort(order.begin(), order.end(),compare_release);
-    // cout << "Printing order...\n";
-    // cout << "id | period | execution | deadline | abs_deadline | remaining_time | release_time\n";
-    // for(auto t:order) {
-    //     cout<<t.id<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" " << t.abs_deadline << " " <<t.remaining_time<<" "<<t.release_time<<endl;
-    // }
-    // cout << "\n\n\n";
     
     ScheduleTasks(order);
-    cout << "Scheduled saved in schedule.csv\n";
+    cout << "Scheduled saved in schedule_edf.csv\n";
 
     return 0;
 }
