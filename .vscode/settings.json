@@ -6,6 +6,13 @@
         "string": "cpp",
         "vector": "cpp",
         "ostream": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "*.tcc": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "any": "cpp",
+        "system_error": "cpp"
     }
 }

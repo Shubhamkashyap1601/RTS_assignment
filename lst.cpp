@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define MAX_TIME 80
+long long MAX_TIME = 80;
 
 struct Task {
     int id;
@@ -13,6 +13,15 @@ struct Task {
     int abs_deadline;
     int slack_time;
 };
+
+long long calcHP(vector<Task>& task){
+    int  temp = 1;
+    for(int i=0;i<task.size();i++){
+        temp = (temp*task[i].period)/__gcd(temp,task[i].period);
+    }
+    cout << "HP: " << temp << endl;
+    return temp;
+}
 
 bool compare_release(Task& task1, Task& task2){
     if (task1.release_time == task2.release_time)
@@ -123,10 +132,11 @@ void ScheduleTasks(vector<Task>& order) {
 int main() {
     vector<Task> tasks = ReadTaskInformation("tasks.csv");
     if (!isSchedulable(tasks)) {
-        cout << "Tasks are not schedulable using Rate Monotonic Scheduling." << endl;
+        cout << "Tasks are not schedulable using Least Slack Time First Scheduling." << endl;
         return 1;
     }
-     vector<Task> order;
+    
+    vector<Task> order;
     for(auto t:tasks) {
         for(int i=0;i<=MAX_TIME;i+=t.period) {
             t.abs_deadline = i + t.deadline;
@@ -135,6 +145,7 @@ int main() {
             order.push_back(t);
         }
     }
+    MAX_TIME = calcHP(tasks);
 
     sort(order.begin(), order.end(),compare_release);
     cout << "Printing order...\n";
