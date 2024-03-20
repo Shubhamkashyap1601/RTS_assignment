@@ -1,395 +1,65 @@
-Hyperperiod: 390
+Hyperperiod: 60
 ----------- SCHEDULING NOW -----------
 Time		Task
 0			T2
-1			T2
-2			T2
-3			T2
-4			T2
-5			T1
-6			T4
+1			T1
+2			T1
+3			T1
+4			T3
+5			T2
+6			T3
 7			T3
 8			T3
 9			T3
 10			T2
-11			T2
-12			T2
-13			T2
-14			T2
-15			T1
-16			T3
+No task available at time 11
+12			T1
+13			T1
+14			T1
+15			T2
+No task available at time 16
 No task available at time 17
 No task available at time 18
 No task available at time 19
 20			T2
-21			T2
-22			T2
-23			T2
-24			T2
-No task available at time 25
-26			T4
-No task available at time 27
+No task available at time 21
+No task available at time 22
+No task available at time 23
+24			T1
+25			T2
+26			T1
+27			T1
 No task available at time 28
 No task available at time 29
 30			T2
-31			T2
-32			T2
-33			T2
-34			T2
-35			T1
-No task available at time 36
-No task available at time 37
-No task available at time 38
+31			T3
+32			T3
+33			T3
+34			T3
+35			T2
+36			T1
+37			T1
+38			T1
 39			T3
 40			T2
-41			T2
-42			T2
-43			T2
-44			T2
-45			T1
-46			T3
-47			T3
-48			T3
-No task available at time 49
+No task available at time 41
+No task available at time 42
+No task available at time 43
+No task available at time 44
+45			T2
+No task available at time 46
+No task available at time 47
+48			T1
+49			T1
 50			T2
-51			T2
-52			T4
-53			T2
-54			T2
+51			T1
+No task available at time 52
+No task available at time 53
+No task available at time 54
 55			T2
 No task available at time 56
 No task available at time 57
 No task available at time 58
 No task available at time 59
 60			T2
-61			T2
-62			T2
-63			T2
-64			T2
-65			T1
-No task available at time 66
-No task available at time 67
-No task available at time 68
-No task available at time 69
-70			T2
-71			T2
-72			T2
-73			T2
-74			T2
-75			T1
-No task available at time 76
-No task available at time 77
-78			T4
-79			T3
-80			T2
-81			T2
-82			T2
-83			T2
-84			T2
-85			T3
-86			T3
-87			T3
-No task available at time 88
-No task available at time 89
-90			T2
-91			T2
-92			T2
-93			T2
-94			T2
-95			T1
-No task available at time 96
-No task available at time 97
-No task available at time 98
-No task available at time 99
-100			T2
-101			T2
-102			T2
-103			T2
-104			T2
-No task available at time 105
-No task available at time 106
-No task available at time 107
-No task available at time 108
-No task available at time 109
-No task available at time 110
-No task available at time 111
-No task available at time 112
-No task available at time 113
-No task available at time 114
-No task available at time 115
-No task available at time 116
-No task available at time 117
-No task available at time 118
-No task available at time 119
-No task available at time 120
-No task available at time 121
-No task available at time 122
-No task available at time 123
-No task available at time 124
-No task available at time 125
-No task available at time 126
-No task available at time 127
-No task available at time 128
-No task available at time 129
-No task available at time 130
-No task available at time 131
-No task available at time 132
-No task available at time 133
-No task available at time 134
-No task available at time 135
-No task available at time 136
-No task available at time 137
-No task available at time 138
-No task available at time 139
-No task available at time 140
-No task available at time 141
-No task available at time 142
-No task available at time 143
-No task available at time 144
-No task available at time 145
-No task available at time 146
-No task available at time 147
-No task available at time 148
-No task available at time 149
-No task available at time 150
-No task available at time 151
-No task available at time 152
-No task available at time 153
-No task available at time 154
-No task available at time 155
-No task available at time 156
-No task available at time 157
-No task available at time 158
-No task available at time 159
-No task available at time 160
-No task available at time 161
-No task available at time 162
-No task available at time 163
-No task available at time 164
-No task available at time 165
-No task available at time 166
-No task available at time 167
-No task available at time 168
-No task available at time 169
-No task available at time 170
-No task available at time 171
-No task available at time 172
-No task available at time 173
-No task available at time 174
-No task available at time 175
-No task available at time 176
-No task available at time 177
-No task available at time 178
-No task available at time 179
-No task available at time 180
-No task available at time 181
-No task available at time 182
-No task available at time 183
-No task available at time 184
-No task available at time 185
-No task available at time 186
-No task available at time 187
-No task available at time 188
-No task available at time 189
-No task available at time 190
-No task available at time 191
-No task available at time 192
-No task available at time 193
-No task available at time 194
-No task available at time 195
-No task available at time 196
-No task available at time 197
-No task available at time 198
-No task available at time 199
-No task available at time 200
-No task available at time 201
-No task available at time 202
-No task available at time 203
-No task available at time 204
-No task available at time 205
-No task available at time 206
-No task available at time 207
-No task available at time 208
-No task available at time 209
-No task available at time 210
-No task available at time 211
-No task available at time 212
-No task available at time 213
-No task available at time 214
-No task available at time 215
-No task available at time 216
-No task available at time 217
-No task available at time 218
-No task available at time 219
-No task available at time 220
-No task available at time 221
-No task available at time 222
-No task available at time 223
-No task available at time 224
-No task available at time 225
-No task available at time 226
-No task available at time 227
-No task available at time 228
-No task available at time 229
-No task available at time 230
-No task available at time 231
-No task available at time 232
-No task available at time 233
-No task available at time 234
-No task available at time 235
-No task available at time 236
-No task available at time 237
-No task available at time 238
-No task available at time 239
-No task available at time 240
-No task available at time 241
-No task available at time 242
-No task available at time 243
-No task available at time 244
-No task available at time 245
-No task available at time 246
-No task available at time 247
-No task available at time 248
-No task available at time 249
-No task available at time 250
-No task available at time 251
-No task available at time 252
-No task available at time 253
-No task available at time 254
-No task available at time 255
-No task available at time 256
-No task available at time 257
-No task available at time 258
-No task available at time 259
-No task available at time 260
-No task available at time 261
-No task available at time 262
-No task available at time 263
-No task available at time 264
-No task available at time 265
-No task available at time 266
-No task available at time 267
-No task available at time 268
-No task available at time 269
-No task available at time 270
-No task available at time 271
-No task available at time 272
-No task available at time 273
-No task available at time 274
-No task available at time 275
-No task available at time 276
-No task available at time 277
-No task available at time 278
-No task available at time 279
-No task available at time 280
-No task available at time 281
-No task available at time 282
-No task available at time 283
-No task available at time 284
-No task available at time 285
-No task available at time 286
-No task available at time 287
-No task available at time 288
-No task available at time 289
-No task available at time 290
-No task available at time 291
-No task available at time 292
-No task available at time 293
-No task available at time 294
-No task available at time 295
-No task available at time 296
-No task available at time 297
-No task available at time 298
-No task available at time 299
-No task available at time 300
-No task available at time 301
-No task available at time 302
-No task available at time 303
-No task available at time 304
-No task available at time 305
-No task available at time 306
-No task available at time 307
-No task available at time 308
-No task available at time 309
-No task available at time 310
-No task available at time 311
-No task available at time 312
-No task available at time 313
-No task available at time 314
-No task available at time 315
-No task available at time 316
-No task available at time 317
-No task available at time 318
-No task available at time 319
-No task available at time 320
-No task available at time 321
-No task available at time 322
-No task available at time 323
-No task available at time 324
-No task available at time 325
-No task available at time 326
-No task available at time 327
-No task available at time 328
-No task available at time 329
-No task available at time 330
-No task available at time 331
-No task available at time 332
-No task available at time 333
-No task available at time 334
-No task available at time 335
-No task available at time 336
-No task available at time 337
-No task available at time 338
-No task available at time 339
-No task available at time 340
-No task available at time 341
-No task available at time 342
-No task available at time 343
-No task available at time 344
-No task available at time 345
-No task available at time 346
-No task available at time 347
-No task available at time 348
-No task available at time 349
-No task available at time 350
-No task available at time 351
-No task available at time 352
-No task available at time 353
-No task available at time 354
-No task available at time 355
-No task available at time 356
-No task available at time 357
-No task available at time 358
-No task available at time 359
-No task available at time 360
-No task available at time 361
-No task available at time 362
-No task available at time 363
-No task available at time 364
-No task available at time 365
-No task available at time 366
-No task available at time 367
-No task available at time 368
-No task available at time 369
-No task available at time 370
-No task available at time 371
-No task available at time 372
-No task available at time 373
-No task available at time 374
-No task available at time 375
-No task available at time 376
-No task available at time 377
-No task available at time 378
-No task available at time 379
-No task available at time 380
-No task available at time 381
-No task available at time 382
-No task available at time 383
-No task available at time 384
-No task available at time 385
-No task available at time 386
-No task available at time 387
-No task available at time 388
-No task available at time 389
-No task available at time 390
 ----------- SCHEDULING ENDS -----------
