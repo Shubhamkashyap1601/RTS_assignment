@@ -1,0 +1,104 @@
+----------- SCHEDULING NOW -----------
+Time		Task
+0			T6
+1			T10
+2			T10
+3			T2
+4			T1
+5			T1
+6			T6
+7			T1
+8			T8
+9			T8
+10			T5
+11			T5
+12			T6
+13			T5
+14			T5
+15			T5
+16			T3
+17			T3
+18			T6
+19			T3
+20			T3
+21			T3
+22			T4
+23			T4
+24			T6
+25			T4
+26			T4
+27			T7
+28			T10
+29			T10
+30			T6
+31			T7
+32			T7
+33			T9
+34			T9
+35			T2
+36			T6
+37			T9
+No task available at time 38
+No task available at time 39
+No task available at time 40
+No task available at time 41
+42			T6
+43			T1
+44			T1
+45			T1
+No task available at time 46
+No task available at time 47
+48			T6
+No task available at time 49
+No task available at time 50
+No task available at time 51
+No task available at time 52
+No task available at time 53
+54			T6
+No task available at time 55
+56			T10
+57			T10
+No task available at time 58
+No task available at time 59
+60			T6
+No task available at time 61
+62			T8
+63			T5
+64			T5
+65			T5
+66			T6
+67			T5
+68			T5
+69			T8
+70			T2
+71			T3
+72			T6
+73			T3
+74			T3
+75			T3
+76			T3
+No task available at time 77
+78			T6
+79			T4
+80			T4
+81			T4
+82			T7
+83			T7
+84			T6
+85			T10
+86			T10
+87			T1
+88			T1
+89			T1
+90			T6
+91			T7
+92			T4
+No task available at time 93
+No task available at time 94
+No task available at time 95
+96			T6
+97			T9
+98			T9
+99			T9
+No task available at time 100
+----------- SCHEDULING ENDS -----------
