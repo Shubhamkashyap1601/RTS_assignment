@@ -1,3 +1,5 @@
-.csv
-.exe
-.bin
+*.csv
+*.exe
+*.bin
+
+.vscode/*
