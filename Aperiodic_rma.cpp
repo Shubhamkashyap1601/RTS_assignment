@@ -2,7 +2,7 @@
 using namespace std;
 
 long long MAX_TIME = 100;
-ofstream outputFile("schedule_rma.csv");
+ofstream outputFile("schedule_rma_AP.csv");
 
 struct Task {
     int id;
@@ -20,6 +20,12 @@ struct Task {
         else
             return period > other.period; // If release times are the same, sort by period
     }
+};
+
+struct AP_Task{
+    int id;
+    int release_time;
+    int execution;
 };
 
 long long calcHP(vector<Task>& task){
@@ -64,6 +70,31 @@ vector<Task> ReadTaskInformation(const string& filename) {
     return tasks;
 }
 
+vector<AP_Task> ReadAPTaskInformation(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Failed to open " << filename << endl;
+        exit(1);
+    }
+    vector<AP_Task> tasks;
+    string line;
+    getline(file, line); // Skip the header line
+    while(getline(file, line)){
+        stringstream ss(line);
+        string token;
+        AP_Task task;
+        getline(ss, token, ',');
+        task.id = stoi(token);
+        getline(ss, token, ',');
+        task.release_time = stoi(token);
+        getline(ss, token, ',');
+        task.execution = stoi(token);
+        tasks.push_back(task);
+    }
+    file.close();
+    return tasks;
+}
+
 bool isSchedulable(const vector<Task>& tasks) {
     double utilization = 0;
     for (const auto& task : tasks) {
@@ -72,7 +103,7 @@ bool isSchedulable(const vector<Task>& tasks) {
     return utilization <= 1;
 }
 
-void ScheduleTasks(vector<Task>& order) {
+void ScheduleTasks(vector<Task>& order, vector<AP_Task>& aperiodic_tasks) {
     cout << "Scheduling tasks...\n";
     priority_queue<Task> pq;
     int n = order.size();
@@ -112,7 +143,13 @@ int main() {
         cout << "Tasks are not schedulable using Rate Monotonic Scheduling." << endl;
         return 1;
     }
-     
+    vector<AP_Task> aperiodic_tasks = ReadAPTaskInformation("AP_tasks.csv");
+    sort(aperiodic_tasks.begin(), aperiodic_tasks.end(), [](const AP_Task& a, const AP_Task& b) {
+        return a.release_time < b.release_time;
+    });
+    for(auto t:aperiodic_tasks){
+        cout << t.id << " " << t.release_time << " " << t.execution << "\n";
+    }
     vector<Task> order;
     // MAX_TIME = calcHP(tasks);
     for(auto t:tasks) {
@@ -124,10 +161,8 @@ int main() {
 
 
     sort(order.begin(), order.end());
-
-   
      
-    ScheduleTasks(order);
+    ScheduleTasks(order,aperiodic_tasks);
     cout << "Scheduled saved in schedule_rma.csv\n";
     return 0;
 }

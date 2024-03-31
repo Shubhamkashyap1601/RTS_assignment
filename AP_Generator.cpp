@@ -10,7 +10,7 @@ struct Task{
 Task generator(int n) {
     Task New_task;
         New_task.execution = (rand() % 10)+1;
-        New_task.release_time = (rand() % 500);
+        New_task.release_time = (rand() % (50*n));
     
     return New_task;
 }
