@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-long long MAX_TIME = 100;
+long long MAX_TIME = 500;
 ofstream outputFile("schedule_rma_AP.csv");
 
 struct Task {
@@ -18,15 +18,22 @@ struct Task {
             return execution>other.execution;
         }
         else
-            return period > other.period; // If release times are the same, sort by period
+            return period < other.period; // If release times are the same, sort by period
     }
 };
 
-struct AP_Task{
+struct AP_Task {
     int id;
     int release_time;
     int execution;
+
+    bool operator<(const AP_Task& other) const {
+        if (release_time != other.release_time)
+            return release_time < other.release_time; // Sort by release time first
+        return id < other.id; // if release times are the same, sort by id
+    }
 };
+
 
 long long calcHP(vector<Task>& task){
     long long temp = 1;
@@ -106,16 +113,23 @@ bool isSchedulable(const vector<Task>& tasks) {
 void ScheduleTasks(vector<Task>& order, vector<AP_Task>& aperiodic_tasks) {
     cout << "Scheduling tasks...\n";
     priority_queue<Task> pq;
+    priority_queue<AP_Task> apq;
     int n = order.size();
     int time = 0;
    
     outputFile << "----------- SCHEDULING NOW -----------\n";
     outputFile << "Time\t\tTask"<< "\n";
     int i = 0;
+    int ai = 0;
     while(time<=MAX_TIME){
         while(time==order[i].release_time && time <=MAX_TIME && i < n){
             pq.push(order[i]);
             i++;
+        }
+        while(time==aperiodic_tasks[ai].release_time && time <=MAX_TIME && ai < aperiodic_tasks.size()){
+            cout<<"in1\n";
+            apq.push(aperiodic_tasks[ai]);
+            ai++;
         }
         
 
@@ -129,13 +143,25 @@ void ScheduleTasks(vector<Task>& order, vector<AP_Task>& aperiodic_tasks) {
                 pq.push(temp);
             }
         } else {
-            outputFile << "No task available at time " << time << "\n";
-        }
+            if(!apq.empty()){
+                AP_Task temp = apq.top();
+                apq.pop();
+                outputFile << time << "\t\t\tAP" << temp.id << "\n";
+                temp.execution--;
+                if(temp.execution>0){
+                    apq.push(temp);
+                }
 
+            }
+            else{
+                outputFile << "No task available at time " << time << "\n";
+            }
+        }
         time++;
     }
     outputFile << "----------- SCHEDULING ENDS -----------\n";
 }
+
 
 int main() {
     vector<Task> tasks = ReadTaskInformation("tasks.csv");
@@ -144,9 +170,7 @@ int main() {
         return 1;
     }
     vector<AP_Task> aperiodic_tasks = ReadAPTaskInformation("AP_tasks.csv");
-    sort(aperiodic_tasks.begin(), aperiodic_tasks.end(), [](const AP_Task& a, const AP_Task& b) {
-        return a.release_time < b.release_time;
-    });
+    sort(aperiodic_tasks.begin(), aperiodic_tasks.end());
     for(auto t:aperiodic_tasks){
         cout << t.id << " " << t.release_time << " " << t.execution << "\n";
     }

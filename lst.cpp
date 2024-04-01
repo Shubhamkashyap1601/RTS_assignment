@@ -135,7 +135,7 @@ int main() {
         cout << "Tasks are not schedulable using Least Slack Time First Scheduling." << endl;
         return 1;
     }
-    MAX_TIME = calcHP(tasks);
+    // MAX_TIME = calcHP(tasks);
     
     vector<Task> order;
     for(auto t:tasks) {

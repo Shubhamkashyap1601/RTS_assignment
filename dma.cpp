@@ -112,7 +112,7 @@ int main() {
         cout << "Tasks are not schedulable using Deadline Monotonic Scheduling." << endl;
         return 1;
     }
-    MAX_TIME = calcHP(tasks);
+    // MAX_TIME = calcHP(tasks);
      vector<Task> order;
     for(auto t:tasks) {
         for(int i=0;i<=MAX_TIME;i+=t.period) {
