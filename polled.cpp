@@ -131,7 +131,6 @@ void ScheduleTasks(vector<Task>& order, vector<AP_Task>& aperiodic_tasks) {
             i++;
         }
         while(time==aperiodic_tasks[ai].release_time && time <=MAX_TIME && ai < aperiodic_tasks.size()){
-            cout<<"in1\n";
             apq.push(aperiodic_tasks[ai]);
             ai++;
         }
@@ -175,6 +174,55 @@ float util(vector<Task> tasks){
     return utilization;
 }
 
+vector<long long> findFactors(long long num) {
+    cout<<"in\n\n\n\n";
+    cout<<("num: \n",num);
+    vector<long long> factors;
+    for (long long i = 1; i <= sqrt(num); ++i) {
+        if (num % i == 0) {
+            factors.push_back(i);
+            if (num / i != i) {
+                factors.push_back(num / i);
+            }
+        }
+    }
+    return factors;
+}
+
+int maxExecution(vector<Task> tasks) {
+    int maxEx = 0;
+    for (const auto& task : tasks) {
+        maxEx = max(maxEx, task.execution);
+    }
+    return maxEx;
+}
+
+bool checkCondition(vector<Task> tasks, long long frame) {
+    for(auto i:tasks){
+        if(frame<i.execution){
+            return false;
+        }
+        if(2*frame - __gcd((long long)i.period,frame) < i.deadline){
+            return false;
+        }
+    }
+    return true;
+}
+
+long long findFrame(vector<Task> tasks, vector<long long>& factors) {
+
+    int maxEx = maxExecution(tasks);
+    long long frame = -1;
+    for(auto i:factors){
+        if(checkCondition(tasks,i)){
+            frame = i;
+            break;
+        }
+    }
+    cout<<"Frame: "<<frame<<"\n";
+    return frame;
+}
+
 
 int main() {
     vector<Task> tasks = ReadTaskInformation("tasks.csv");
@@ -202,6 +250,19 @@ int main() {
     cout<<"util: "<<u<<" period : "<<p<<" execution: "<<execution<<"\n";
 
     sort(order.begin(), order.end());
+    long long HP = calcHP(tasks);
+    vector<long long> factors =  findFactors(HP);
+    sort(factors.begin(),factors.end());
+    cout<<"Factors of HP: ";
+    for(auto i:factors){
+        cout<<i<<" ";
+    }
+    long long frame = findFrame(tasks,factors);
+    if(frame == -1){
+        cout<<"No frame found\n";
+        cout<<"taking frame as HP\n";
+        frame = HP;
+    }
      
     ScheduleTasks(order,aperiodic_tasks);
     cout << "Scheduled saved in polled.csv\n";
