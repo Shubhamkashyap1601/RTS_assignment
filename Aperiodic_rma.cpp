@@ -174,9 +174,7 @@ int main() {
     }
     vector<AP_Task> aperiodic_tasks = ReadAPTaskInformation("AP_tasks.csv");
     sort(aperiodic_tasks.begin(), aperiodic_tasks.end());
-    for(auto t:aperiodic_tasks){
-        cout << t.id << " " << t.release_time << " " << t.execution << "\n";
-    }
+    
     vector<Task> order;
     // MAX_TIME = calcHP(tasks);
     for(auto t:tasks) {

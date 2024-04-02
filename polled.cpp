@@ -246,7 +246,7 @@ long long findFrame(vector<Task> tasks, vector<long long>& factors) {
             break;
         }
     }
-    cout<<"Frame: "<<frame<<"\n";
+    cout<<"\nFrame: "<<frame<<"\n";
     return frame;
 }
 
@@ -308,13 +308,7 @@ int main() {
 
     sort(order.begin(), order.end());
 
-    for(auto t:order){
-        if(!t.isAperiodic)
-        cout<<(t.id)<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" "<<t.release_time<<" "<<t.isAperiodic<<"\n";
-        else{
-            cout<<intToRoman(t.id)<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" "<<t.release_time<<"\n";
-        }
-    }
+    
 
     long long HP = calcHP(tasks);
     vector<long long> factors =  findFactors(HP);
