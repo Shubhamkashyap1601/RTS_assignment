@@ -34,6 +34,10 @@ struct AP_Task {
     }
 };
 
+bool compare(AP_Task a, AP_Task b){
+    return a.release_time < b.release_time;
+}
+
 
 long long calcHP(vector<Task>& task){
     long long temp = 1;
@@ -127,7 +131,6 @@ void ScheduleTasks(vector<Task>& order, vector<AP_Task>& aperiodic_tasks) {
             i++;
         }
         while(time==aperiodic_tasks[ai].release_time && time <=MAX_TIME && ai < aperiodic_tasks.size()){
-            cout<<"in1\n";
             apq.push(aperiodic_tasks[ai]);
             ai++;
         }
