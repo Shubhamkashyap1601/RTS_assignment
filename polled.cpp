@@ -11,6 +11,7 @@ struct Task {
     int remaining_time;
     int deadline;
     int release_time;
+    int isAperiodic = false;
     bool operator<(const Task& other) const {
         if (release_time != other.release_time)
             return release_time < other.release_time; // Sort by release time first
@@ -114,56 +115,83 @@ bool isSchedulable(const vector<Task>& tasks) {
     return utilization <= 1;
 }
 
-void ScheduleTasks(vector<Task>& order, vector<AP_Task>& aperiodic_tasks) {
-    cout << "Scheduling tasks...\n";
-    priority_queue<Task> pq;
-    priority_queue<AP_Task> apq;
-    int n = order.size();
-    int time = 0;
-   
-    outputFile << "----------- SCHEDULING NOW -----------\n";
-    outputFile << "Time\t\tTask"<< "\n";
-    int i = 0;
-    int ai = 0;
-    while(time<=MAX_TIME){
-        while(time==order[i].release_time && time <=MAX_TIME && i < n){
-            pq.push(order[i]);
-            i++;
-        }
-        while(time==aperiodic_tasks[ai].release_time && time <=MAX_TIME && ai < aperiodic_tasks.size()){
-            apq.push(aperiodic_tasks[ai]);
-            ai++;
-        }
-        
+void ScheduleTasks(vector<Task>& order, vector<AP_Task>& aperiodic_tasks, long long frame, int budget, int AP_period) {
+  int startFrame = frame;
+  cout << "Scheduling tasks...\n";
+  priority_queue<Task> pq; // Priority queue for periodic tasks
+  priority_queue<AP_Task> apq; // Priority queue for aperiodic tasks
+  int n = order.size();
+  int time = 0;
 
-        if (!pq.empty()) {
-            Task temp = pq.top();
-            pq.pop();
-            outputFile << time << "\t\t\tT" << temp.id << "\n";
-            temp.remaining_time--;
+  outputFile << "----------- SCHEDULING NOW -----------\n";
+  outputFile << "Time\t\tTask\n";
+  int i = 0;
+  int ai = 0;
+  int serverBudget = 0; // Budget for the current server period
 
-            if (temp.remaining_time > 0) {
-                pq.push(temp);
-            }
-        } else {
-            if(!apq.empty()){
-                AP_Task temp = apq.top();
-                apq.pop();
-                outputFile << time << "\t\t\tAP" << temp.id << "\n";
-                temp.execution--;
-                if(temp.execution>0){
-                    apq.push(temp);
-                }
-
-            }
-            else{
-                outputFile << "No task available at time " << time << "\n";
-            }
-        }
-        time++;
+  while (time <= MAX_TIME) {
+    // Add upcoming tasks (periodic & aperiodic) to their respective queues
+    while (startFrame >= order[i].release_time && time <= MAX_TIME && i < n) {
+      pq.push(order[i]);
+      i++;
     }
-    outputFile << "----------- SCHEDULING ENDS -----------\n";
+    while (time == aperiodic_tasks[ai].release_time && time <= MAX_TIME && ai < aperiodic_tasks.size()) {
+      apq.push(aperiodic_tasks[ai]);
+      ai++;
+    }
+
+    // Check for server period and update budget
+    if (time % AP_period == 0) {
+      serverBudget = aperiodic_tasks.size() > 0 ? budget : 0; // Reset budget based on aperiodic task queue
+    }
+
+    // Process tasks until budget is exhausted or no tasks available
+    int timeLeft = startFrame - time; // Remaining time within the frame
+    while (!pq.empty() || !apq.empty()) {
+      // Priority: Aperiodic tasks first (if any & budget allows)
+      if (!apq.empty() && serverBudget > 0) {
+        AP_Task currentTask = apq.top();
+        apq.pop();
+
+        // Check if task execution fits within budget, deadline, and frame
+        if (currentTask.execution <= serverBudget && currentTask.release_time + currentTask.execution <= time + frame && currentTask.execution <= timeLeft) {
+          outputFile << time << "\t\tAP-" << currentTask.id << "\n";
+          serverBudget -= currentTask.execution;
+          timeLeft -= currentTask.execution;
+        }
+      } else {
+        // Process periodic task from the queue
+        Task currentTask = pq.top();
+        pq.pop();
+
+        // Handle periodic task execution
+        if (timeLeft > 0) {
+          currentTask.remaining_time = min(currentTask.remaining_time, timeLeft); // Limit execution within frame
+          outputFile << time << "\t\t" << currentTask.id << "\n";
+          timeLeft -= currentTask.remaining_time;
+          if (currentTask.remaining_time > 0) {
+            pq.push(currentTask); // Push back remaining periodic task if needed
+          }
+        }
+      }
+
+      // Stop processing if budget is exhausted or frame time limit is reached
+      if (serverBudget <= 0 || timeLeft <= 0) {
+        break;
+      }
+    }
+
+    // Handle no tasks available
+    if (pq.empty() && apq.empty()) {
+      outputFile << "No task available at time " << time << "\n";
+    }
+
+    time++;
+  }
+
+  outputFile << "----------- SCHEDULING ENDS -----------\n";
 }
+
 
 float util(vector<Task> tasks){
     double utilization = 0;
@@ -175,7 +203,6 @@ float util(vector<Task> tasks){
 }
 
 vector<long long> findFactors(long long num) {
-    cout<<"in\n\n\n\n";
     cout<<("num: \n",num);
     vector<long long> factors;
     for (long long i = 1; i <= sqrt(num); ++i) {
@@ -223,6 +250,26 @@ long long findFrame(vector<Task> tasks, vector<long long>& factors) {
     return frame;
 }
 
+string intToRoman(int num) {
+    if(num==0){
+        return "@";
+    }
+    vector<pair<int, string>> roman = {
+        {1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+        {100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"},
+        {10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"}
+    };
+
+    string result;
+    for (auto& value : roman) {
+        while (num >= value.first) {
+            num -= value.first;
+            result += value.second;
+        }
+    }
+    return result;
+}
+
 
 int main() {
     vector<Task> tasks = ReadTaskInformation("tasks.csv");
@@ -232,9 +279,6 @@ int main() {
     }
     vector<AP_Task> aperiodic_tasks = ReadAPTaskInformation("AP_tasks.csv");
     sort(aperiodic_tasks.begin(), aperiodic_tasks.end());
-    for(auto t:aperiodic_tasks){
-        cout << t.id << " " << t.release_time << " " << t.execution << "\n";
-    }
     vector<Task> order;
     // MAX_TIME = calcHP(tasks);
     for(auto t:tasks) {
@@ -245,18 +289,37 @@ int main() {
     }
 
     float  u = util(tasks);
-    int p = max(10,tasks[0].period-1);
-    int execution = p*(1-u);
+    int p = max(50,tasks[0].period-1);
+    int execution = p*(1-u);//getting excecution budget
     cout<<"util: "<<u<<" period : "<<p<<" execution: "<<execution<<"\n";
+    int c = 0;
+    for(int i=0;i<=MAX_TIME;i+=p){
+        Task temp;
+
+        temp.id = c++;
+        temp.period = p;
+        temp.execution = execution;
+        temp.deadline = p;
+        temp.remaining_time = execution;
+        temp.release_time = i;
+        temp.isAperiodic = true;
+        order.push_back(temp);
+    }
 
     sort(order.begin(), order.end());
+
+    for(auto t:order){
+        if(!t.isAperiodic)
+        cout<<(t.id)<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" "<<t.release_time<<" "<<t.isAperiodic<<"\n";
+        else{
+            cout<<intToRoman(t.id)<<" "<<t.period<<" "<<t.execution<<" "<<t.deadline<<" "<<t.release_time<<"\n";
+        }
+    }
+
     long long HP = calcHP(tasks);
     vector<long long> factors =  findFactors(HP);
     sort(factors.begin(),factors.end());
-    cout<<"Factors of HP: ";
-    for(auto i:factors){
-        cout<<i<<" ";
-    }
+   
     long long frame = findFrame(tasks,factors);
     if(frame == -1){
         cout<<"No frame found\n";
@@ -264,7 +327,7 @@ int main() {
         frame = HP;
     }
      
-    ScheduleTasks(order,aperiodic_tasks);
+    ScheduleTasks(order,aperiodic_tasks,frame,execution,p);
     cout << "Scheduled saved in polled.csv\n";
     return 0;
 }
